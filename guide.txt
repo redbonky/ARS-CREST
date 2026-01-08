@@ -7,26 +7,26 @@ The first half of the code is for the celestial body setup (called the bodycode)
 
 Each section of the bodycode or requestcode (either a singular body or a singular data request) is separated by ", ", each argument of a section is separated by "."
 
-All body codes follow the same order: Y, X, Y Velocity, X Velocity, Mass, Color, Name
-So 0.-1000.-18.0.1e15.brightcyan.Cyan body is an object with coordinates (-1000,0) (because x and y are swapped), velocity (0,-18), mass 1e15 (you can write numbers in normal or scientific form), color of bright cyan (there's a specific color dictionary available that I'll list, let me know if you want more specificity), and name 'Cyan body'
-The body ID of an object is it's position in your setup code, the first position is 0, second is 1 and so on, you need to know it's ID if you're using a data request on it
+All particle codes follow the same order: Y, X, Y Velocity, X Velocity, Mass, Color, Name
+So 0.-1000.-18.0.1e15.brightcyan.Cyan particle is an object with coordinates (-1000,0) (because x and y are swapped), velocity (0,-18), mass 1e15 (you can write numbers in normal or scientific form), color of bright cyan (there's a specific color dictionary available that I'll list, let me know if you want more specificity), and name 'Cyan particle'
+The particle ID of an object is it's position in your setup code, the first position is 0, second is 1 and so on, you need to know it's ID if you're using a data request on it
 
 The available colors are Black, Red, Green, Yellow, Blue, Purple, Cyan, Silver, Grey, Brightred, Brightgreen, Brightyellow, Brightblue, Pink, Brightcyan, and White (these are not case-sensitive)
-Unlike body codes, request codes have different lengths, so they'll use a different number of "."s
+Unlike particle codes, request codes have different lengths, so they'll use a different number of "."s
 All request codes begin with their name
 
 There are currently 8 data requests:
-"camhelper" gives the location and zoom of the camera, as well as the offset of all bodies relative to your camera (to help find them), does not have arguments (e.g. camhelper)
-"pos" gives the location of a body, it's argument is the number ID of it's body (e.g. pos.0)
-"bodyspeed" gives the meters per frame speed (not per second, framerate is shown) (e.g. bodyspeed.0)
-"gravitationalforce1" gives the gravitational force affecting both bodies in it's comparison, this force is equal (e.g. gravitationalforce1.0.1)
-"gravitationalforce2" is the same but it gives the real gravitational force affecting it's first body, taking into account it's mass (which significantly decreases it) (e.g. gravitationalforce2.0.1)
-"bodydist" gives the meter distance between both bodies in it's comparison, (e.g. bodydist.0.1)
-"speedmeasure" gives the minimum and maximum speed that a body has moved at in it's lifetime (e.g. speedmeasure.0)
-"orbitdist" gives the apoapsis (highest distance) and periapsis (lowest distance) that two bodies have been at in their lifetime, this is a rudimentary way of getting an orbit size, although it will break if the primary (second parameter) isn't stationary, or if the secondary (first parameter) isn't in a stable enough orbit, the third parameter is 0 or 1 for displaying the approximate apoapsis and periapsis position (from the secondary), and the fourth parameter is colour (e.g. 0.1.1.cyan)
+"camhelper" gives the location and zoom of the camera, as well as the offset of all particles relative to your camera (to help find them), does not have arguments (e.g. camhelper)
+"pos" gives the location of a particle, it's argument is the number ID of it's particle (e.g. pos.0)
+"particlespeed" gives the meters per frame speed (not per second, framerate is shown) (e.g. particlespeed.0)
+"gravitationalforce1" gives the gravitational force affecting both particles in it's comparison, this force is equal (e.g. gravitationalforce1.0.1)
+"gravitationalforce2" is the same but it gives the real gravitational force affecting it's first particle, taking into account it's mass (which significantly decreases it) (e.g. gravitationalforce2.0.1)
+"particledist" gives the meter distance between both particles in it's comparison, (e.g. particledist.0.1)
+"speedmeasure" gives the minimum and maximum speed that a particle has moved at in it's lifetime (e.g. speedmeasure.0)
+"orbitdist" gives the apoapsis (highest distance) and periapsis (lowest distance) that two particles have been at in their lifetime, this is a rudimentary way of getting an orbit size, although it will break if the primary (second parameter) isn't stationary, or if the secondary (first parameter) isn't in a stable enough orbit, the third parameter is 0 or 1 for displaying the approximate apoapsis and periapsis position (from the secondary), and the fourth parameter is colour (e.g. 0.1.1.cyan)
 
 Example setup codes:
-This one has 2 bodies orbiting around a body 10 times the mass in sync, as well as orbit displays for both of them, the speeds of the cyan body, and camhelper
-0.-1000.-18.0.1e15.brightcyan.Cyan body, 0.1000.18.0.1e15.brightgreen.Green body, 0.0.0.0.1e16.brightred.Red body; speedmeasure.0, camhelper, orbitdist.0.2.1.cyan, orbitdist.1.2.1.green
-Two bodies orbiting eachother with a center of mass between them
-0.-300.-8.0.1e15.brightcyan.Cyan body, 0.300.8.0.1e15.brightgreen.Green body; speedmeasure.0, camhelper, orbitdist.0.1.1.cyan, orbitdist.1.0.1.green
+This one has 2 particles orbiting around a particle 10 times the mass in sync, as well as orbit displays for both of them, the speeds of the cyan particle, and camhelper
+0.-1000.-18.0.1e15.brightcyan.Cyan particle, 0.1000.18.0.1e15.brightgreen.Green particle, 0.0.0.0.1e16.brightred.Red particle; speedmeasure.0, camhelper, orbitdist.0.2.1.cyan, orbitdist.1.2.1.green
+Two particles orbiting eachother with a center of mass between them
+0.-300.-8.0.1e15.brightcyan.Cyan particle, 0.300.8.0.1e15.brightgreen.Green particle; speedmeasure.0, camhelper, orbitdist.0.1.1.cyan, orbitdist.1.0.1.green

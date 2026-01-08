@@ -32,21 +32,21 @@ colors = {"black":"\033[38;5;0m",
           "white":"\033[38;5;15m"}
 requestlist = {"camhelper":0,
                "pos":1,
-               "bodyspeed":2,
+               "particlespeed":2,
                "gravitationalforce":3,
                "gravitationalforce2":4,
-               "bodydist":5,
+               "particledist":5,
                "speedmeasure":6,
                "orbitdist":7}
 while True:
     try:
-        (bodycode,requestcode) = input("Input body and data combination code:").split('; ')
-        bodycode = bodycode.split(', ')
-        bodies = []
+        (particlecode,requestcode) = input("Input particle and data combination code:").split('; ')
+        particlecode = particlecode.split(', ')
+        particles = []
         #Y, X, Y Velocity, X Velocity, Mass, Color, Name
-        for i in range(len(bodycode)):
-            bodycode[i] = bodycode[i].split('.')
-            bodies += [[int(float(bodycode[i][0])),int(float(bodycode[i][1])),int(float(bodycode[i][2])),int(float(bodycode[i][3])),int(float(bodycode[i][4])),colors[bodycode[i][5].lower()],bodycode[i][6]]]
+        for i in range(len(particlecode)):
+            particlecode[i] = particlecode[i].split('.')
+            particles += [[int(float(particlecode[i][0])),int(float(particlecode[i][1])),int(float(particlecode[i][2])),int(float(particlecode[i][3])),int(float(particlecode[i][4])),colors[particlecode[i][5].lower()],particlecode[i][6]]]
         requestcode = requestcode.split(', ')
         requests = []
         for i in range(len(requestcode)):
@@ -97,9 +97,9 @@ while True:
     for i in range(height,0,-1):
         for j in range(width):
             placed = False
-            for k in range(len(bodies)):
-                if i == round(bodies[k][0]/scale-camy+height/2) and j == round(bodies[k][1]/scale-camx+width/2) and placed == False:
-                    print(bodies[k][5],end='')
+            for k in range(len(particles)):
+                if i == round(particles[k][0]/scale-camy+height/2) and j == round(particles[k][1]/scale-camx+width/2) and placed == False:
+                    print(particles[k][5],end='')
                     print('.',end='')
                     print(colors["white"],end=' ')
                     placed = True
@@ -114,81 +114,81 @@ while True:
             if placed == False:
                 print(' ',end=' ')
         print('')
-    for k in range(len(bodies)):
-        for b in range(len(bodies)):
+    for k in range(len(particles)):
+        for b in range(len(particles)):
             if k != b:
                 #Distance between objects
-                bodydist = ((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)**0.5
+                particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
                 #Overall gravity affecting both objects
-                gengravity = gravityconst*(bodies[k][4]*bodies[b][4])/(bodydist**2)
-                #Find the x portion and y portion of the distance between two bodies as fractions
-                yfrac = ((bodies[k][0]-bodies[b][0])**2)/((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)
-                xfrac = ((bodies[k][1]-bodies[b][1])**2)/((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)
-                #Find the amount the gravity is affecting the body in each direction
-                ypart = (yfrac*gengravity)/bodies[k][4]
-                xpart = (xfrac*gengravity)/bodies[k][4]
+                gengravity = gravityconst*(particles[k][4]*particles[b][4])/(particledist**2)
+                #Find the x portion and y portion of the distance between two particles as fractions
+                yfrac = ((particles[k][0]-particles[b][0])**2)/((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)
+                xfrac = ((particles[k][1]-particles[b][1])**2)/((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)
+                #Find the amount the gravity is affecting the particle in each direction
+                ypart = (yfrac*gengravity)/particles[k][4]
+                xpart = (xfrac*gengravity)/particles[k][4]
                 #Apply direction of gravity based on position
-                if bodies[k][0] > bodies[b][0]:
-                    #Body K is above Body B
-                    bodies[k][2] -= ypart
-                elif bodies[k][0] < bodies[b][0]:
-                    #Body K is below Body B
-                    bodies[k][2] += ypart
-                if bodies[k][1] > bodies[b][1]:
-                    #Body K is to the right of Body B
-                    bodies[k][3] -= xpart
-                elif bodies[k][1] < bodies[b][1]:
-                    #Body K is to the left of Body B
-                    bodies[k][3] += xpart
-    for k in range(len(bodies)):
-        bodies[k][0] += bodies[k][2]
-        bodies[k][1] += bodies[k][3]
+                if particles[k][0] > particles[b][0]:
+                    #particle K is above particle B
+                    particles[k][2] -= ypart
+                elif particles[k][0] < particles[b][0]:
+                    #particle K is below particle B
+                    particles[k][2] += ypart
+                if particles[k][1] > particles[b][1]:
+                    #particle K is to the right of particle B
+                    particles[k][3] -= xpart
+                elif particles[k][1] < particles[b][1]:
+                    #particle K is to the left of particle B
+                    particles[k][3] += xpart
+    for k in range(len(particles)):
+        particles[k][0] += particles[k][2]
+        particles[k][1] += particles[k][3]
     for i in range(len(requests)):
         k = requests[i][1]
         match requests[i][0]:
             case 0:
                 print(f"Camera vector:({camx},{camy}) scale:{int(scale)}",end='')
-                for l in range(len(bodies)):
-                    print(f", {bodies[l][6]} vector:({round(bodies[l][1]/scale-camx)},{round(bodies[l][0]/scale-camy)})",end='')
+                for l in range(len(particles)):
+                    print(f", {particles[l][6]} vector:({round(particles[l][1]/scale-camx)},{round(particles[l][0]/scale-camy)})",end='')
                 print("\033[K")
             case 1: #Target 1
-                print(f"{bodies[k][6]} position:({bodies[k][1]:.2e},{bodies[k][0]:.2e}) \033[K")
+                print(f"{particles[k][6]} position:({particles[k][1]:.2e},{particles[k][0]:.2e}) \033[K")
             case 2: #Target 1
-                speed = (bodies[k][2]**2+bodies[k][3]**2)**0.5
-                print(f"{bodies[k][6]} speed per tick:{speed:.2e}m \033[K")
+                speed = (particles[k][2]**2+particles[k][3]**2)**0.5
+                print(f"{particles[k][6]} speed per tick:{speed:.2e}m \033[K")
             case 3: #Target 1, Target 2
                 b = requests[i][2]
-                bodydist = ((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)**0.5
-                tempgrav = (gravityconst*(bodies[k][4]*bodies[b][4])/(bodydist**2))
-                print(f"Shared gravitational force between {bodies[k][6]} and {bodies[b][6]}:{tempgrav:.2e}N \033[K")
+                particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
+                tempgrav = (gravityconst*(particles[k][4]*particles[b][4])/(particledist**2))
+                print(f"Shared gravitational force between {particles[k][6]} and {particles[b][6]}:{tempgrav:.2e}N \033[K")
             case 4: #Target 1, Target 2
                 b = requests[i][2]
-                bodydist = ((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)**0.5
-                tempgrav = (gravityconst*(bodies[k][4]*bodies[b][4])/(bodydist**2))/bodies[k][4]
-                print(f"{bodies[k][6]} gravitational force with {bodies[b][6]}, adjusted for {bodies[k][6]}'s mass:{tempgrav:.2e}N \033[K")
+                particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
+                tempgrav = (gravityconst*(particles[k][4]*particles[b][4])/(particledist**2))/particles[k][4]
+                print(f"{particles[k][6]} gravitational force with {particles[b][6]}, adjusted for {particles[k][6]}'s mass:{tempgrav:.2e}N \033[K")
             case 5: #Target 1, Target 2
                 b = requests[i][2]
-                bodydist = ((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)**0.5
-                print(f"Distance between {bodies[k][6]} and {bodies[b][6]}:{bodydist:.2e}m \033[K")
+                particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
+                print(f"Distance between {particles[k][6]} and {particles[b][6]}:{particledist:.2e}m \033[K")
             case 6: #Target 1, Max Speed, Min Speed
-                speed = (bodies[k][2]**2+bodies[k][3]**2)**0.5
+                speed = (particles[k][2]**2+particles[k][3]**2)**0.5
                 if speed > requests[i][2]:
                     requests[i][2] = speed
                 if speed < requests[i][3]:
                     requests[i][3] = speed
-                print(f"{bodies[k][6]} Minimum speed per tick:{requests[i][3]:.2e}m Maximum speed per tick:{requests[i][2]:.2e}m \033[K")
+                print(f"{particles[k][6]} Minimum speed per tick:{requests[i][3]:.2e}m Maximum speed per tick:{requests[i][2]:.2e}m \033[K")
             case 7: #Target 1, Target 2, Apoapsis dist, y, x, Periapsis dist, y, x, show orbit, periapsis and apoapsis color
                 b = requests[i][2]
-                bodydist = ((bodies[k][0]-bodies[b][0])**2+(bodies[k][1]-bodies[b][1])**2)**0.5
-                if bodydist > requests[i][3]:
-                    requests[i][3] = bodydist
-                    requests[i][4] = bodies[k][0]
-                    requests[i][5] = bodies[k][1]
-                if bodydist < requests[i][6]:
-                    requests[i][6] = bodydist
-                    requests[i][7] = bodies[k][0]
-                    requests[i][8] = bodies[k][1]
-                print(f"Of {bodies[k][6]} relative to {bodies[b][6]}, Est. Apoapsis:({requests[i][5]:.2e},{requests[i][4]:.2e}),{requests[i][3]:.2e}m Est. Periapsis:({requests[i][8]:.2e},{requests[i][8]:.2e}),{requests[i][6]:.2e}m \033[K")
+                particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
+                if particledist > requests[i][3]:
+                    requests[i][3] = particledist
+                    requests[i][4] = particles[k][0]
+                    requests[i][5] = particles[k][1]
+                if particledist < requests[i][6]:
+                    requests[i][6] = particledist
+                    requests[i][7] = particles[k][0]
+                    requests[i][8] = particles[k][1]
+                print(f"Of {particles[k][6]} relative to {particles[b][6]}, Est. Apoapsis:({requests[i][5]:.2e},{requests[i][4]:.2e}),{requests[i][3]:.2e}m Est. Periapsis:({requests[i][8]:.2e},{requests[i][8]:.2e}),{requests[i][6]:.2e}m \033[K")
                 #print(f"{requests[i][3]+requests[i][6]:.2e},{((requests[i][5]-requests[i][7])**2+(requests[i][4]-requests[i][8])**2)**0.5:.2e}")
     frames += 1
     if frames == 10:
@@ -196,6 +196,5 @@ while True:
         time1 = time.time()
         frames = 0
     print(f"FPS: {framerate} \033[K")
-    print(requestsorig)
     print("\033[J")
     print('\033[100A')
