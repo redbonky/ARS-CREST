@@ -30,3 +30,5 @@ This one has 2 particles orbiting around a particle 10 times the mass in sync, a
 0.-1000.-18.0.1e15.brightcyan.Cyan particle, 0.1000.18.0.1e15.brightgreen.Green particle, 0.0.0.0.1e16.brightred.Red particle; speedmeasure.0, camhelper, orbitdist.0.2.1.cyan, orbitdist.1.2.1.green
 Two particles orbiting eachother with a center of mass between them
 0.-300.-8.0.1e15.brightcyan.Cyan particle, 0.300.8.0.1e15.brightgreen.Green particle; speedmeasure.0, camhelper, orbitdist.0.1.1.cyan, orbitdist.1.0.1.green
+Particle having a non-orbital encounter with another higher mass particle
+-1000.1000.1.0.1e10.brightcyan.Cyan particle, 0.0.0.0.1e13.brightgreen.Green particle; speedmeasure.0, particlespeed.0, camhelper, particledist.0.1
