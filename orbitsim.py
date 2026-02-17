@@ -7,6 +7,9 @@ import msvcrt
 import ctypes
 gravityconst = 6.674e-11
 keyboard.send('F11')
+time.sleep(0.1)
+kernel32 = ctypes.windll.kernel32
+kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 128)
 scale = 64
 gamespeed = 1
 camy = 0
