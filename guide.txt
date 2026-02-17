@@ -1,6 +1,6 @@
 This is my (bonky's) space orbit simulator, it's currently entirely based on gravity and mass calculations and doesn't have things like rotation and it's resultant prograde/retrograde motion
 
-Keys: WASD for move camera, Q and E for zoom in and out (higher zoom/scale means smaller distances), R to reset camera, V to set zoom manually, P to reset all data requests
+Keys: WASD for move camera, Q and E for zoom in and out (higher zoom/scale means smaller distances), Z and C to slow down and speed up, R to reset camera, P to reset all data requests
 
 In order to make a simulation you need to use a setup code for it to interpret (if you're lazy you can just copy something from here)
 The first half of the code is for the celestial body setup (called the bodycode), the second half of the code is for the data requests (called the requestcode), the halves are separated by a "; "
@@ -16,7 +16,7 @@ Unlike particle codes, request codes have different lengths, so they'll use a di
 All request codes begin with their name
 
 There are currently 8 data requests:
-"camhelper" gives the location and zoom of the camera, as well as the offset of all particles relative to your camera (to help find them), does not have arguments (e.g. camhelper)
+"camhelper" gives the location and zoom of the camera, and speed, as well as the offset of all particles relative to your camera (to help find them), does not have arguments (e.g. camhelper)
 "pos" gives the location of a particle, it's argument is the number ID of it's particle (e.g. pos.0)
 "particlespeed" gives the meters per frame speed (not per second, framerate is shown) (e.g. particlespeed.0)
 "gravitationalforce1" gives the gravitational force affecting both particles in it's comparison, this force is equal (e.g. gravitationalforce1.0.1)
@@ -31,4 +31,4 @@ This one has 2 particles orbiting around a particle 10 times the mass in sync, a
 Two particles orbiting eachother with a center of mass between them
 0.-300.-8.0.1e15.brightcyan.Cyan particle, 0.300.8.0.1e15.brightgreen.Green particle; speedmeasure.0, camhelper, orbitdist.0.1.1.cyan, orbitdist.1.0.1.green
 Particle having a non-orbital encounter with another higher mass particle
--1000.1000.1.0.1e10.brightcyan.Cyan particle, 0.0.0.0.1e13.brightgreen.Green particle; speedmeasure.0, particlespeed.0, camhelper, particledist.0.1
+-1000.1000.4.0.1e10.brightcyan.Cyan particle, 0.0.0.0.1e14.brightgreen.Green particle; speedmeasure.0, particlespeed.0, camhelper, particledist.0.1
