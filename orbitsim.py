@@ -11,7 +11,7 @@ time.sleep(0.1)
 kernel32 = ctypes.windll.kernel32
 kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 128)
 scale = 64
-gamespeed = 1
+simspeed = 1
 camy = 0
 camx = 0
 colors = {"black":"\033[38;5;0m",
@@ -152,9 +152,9 @@ while True:
     if keyboard.is_pressed("e"):
         scale *= 2
     if keyboard.is_pressed("z"):
-        gamespeed /= 2
+        simspeed /= 2
     if keyboard.is_pressed("c"):
-        gamespeed *= 2
+        simspeed *= 2
     if keyboard.is_pressed("w"):
         camy += 1
     if keyboard.is_pressed("s"):
@@ -169,7 +169,7 @@ while True:
     if keyboard.is_pressed("p"):
         requests = copy.deepcopy(requestsorig)
     scale = clamp(scale,1,scale)
-    gamespeed = clamp(gamespeed,1,512)
+    simspeed = clamp(simspeed,1,512)
     for i in range(height,0,-1):
         for j in range(width):
             placed = False
@@ -206,24 +206,24 @@ while True:
                 #Apply direction of gravity based on position
                 if particles[k][0] > particles[b][0]:
                     #particle K is above particle B
-                    particles[k][2] -= ypart/20*gamespeed
+                    particles[k][2] -= ypart/20*simspeed
                 elif particles[k][0] < particles[b][0]:
                     #particle K is below particle B
-                    particles[k][2] += ypart/20*gamespeed
+                    particles[k][2] += ypart/20*simspeed
                 if particles[k][1] > particles[b][1]:
                     #particle K is to the right of particle B
-                    particles[k][3] -= xpart/20*gamespeed
+                    particles[k][3] -= xpart/20*simspeed
                 elif particles[k][1] < particles[b][1]:
                     #particle K is to the left of particle B
-                    particles[k][3] += xpart/20*gamespeed
+                    particles[k][3] += xpart/20*simspeed
     for k in range(len(particles)):
-        particles[k][0] += particles[k][2]/20*gamespeed
-        particles[k][1] += particles[k][3]/20*gamespeed
+        particles[k][0] += particles[k][2]/20*simspeed
+        particles[k][1] += particles[k][3]/20*simspeed
     for i in range(len(requests)):
         k = requests[i][1]
         match requests[i][0]:
             case 0:
-                print2(f"Camera vector:({camx},{camy}) scale:{int(scale)} speed:{int(gamespeed)}")
+                print2(f"Camera vector:({camx},{camy}) scale:{int(scale)} speed:{int(simspeed)}")
                 for l in range(len(particles)):
                     print2(f", {particles[l][6]} vector:({round(particles[l][1]/scale-camx)},{round(particles[l][0]/scale-camy)})")
                 print2("\033[K\n")
