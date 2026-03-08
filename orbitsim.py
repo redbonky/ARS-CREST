@@ -33,11 +33,12 @@ colors = {"black":"\033[38;5;0m",
 requestlist = {"camhelper":0,
                "pos":1,
                "particlespeed":2,
-               "gravitationalforce":3,
-               "gravitationalforce2":4,
-               "particledist":5,
-               "speedmeasure":6,
-               "orbitdist":7}
+               "particle2speeds":3,
+               "gravitationalforce":4,
+               "gravitationalforce2":5,
+               "particledist":6,
+               "speedmeasure":7,
+               "orbitdist":8}
 def input2(text=""):
     while msvcrt.kbhit():
         msvcrt.getch()
@@ -130,13 +131,13 @@ while True:
             match requestlist[requestcode[i][0]]:
                 case 0: #ID
                     requests += [[requestlist[requestcode[i][0]],0]]
-                case 1|2: #ID, Target 1
+                case 1|2|3: #ID, Target 1
                     requests += [[requestlist[requestcode[i][0]],int(requestcode[i][1])]]
-                case 3|4|5: #ID, Target 1, Target 2
+                case 4|5|6: #ID, Target 1, Target 2
                     requests += [[requestlist[requestcode[i][0]],int(requestcode[i][1]),int(requestcode[i][2])]]
-                case 6:
+                case 7:
                     requests += [[requestlist[requestcode[i][0]],int(requestcode[i][1]),0,1e100]]
-                case 7: #ID, Target 1, Target 2, 3-8 stuff, Show Orbit, Orbit Color
+                case 8: #ID, Target 1, Target 2, 3-8 stuff, Show Orbit, Orbit Color
                     requests += [[requestlist[requestcode[i][0]],int(requestcode[i][1]),int(requestcode[i][2]),0,0,0,1e100,0,0,int(requestcode[i][3]),colors[requestcode[i][4].lower()]]]
     except:
         print2("\nInvalid code, read the included guide\n")
@@ -180,7 +181,7 @@ while True:
                     print2(colors["white"],' ')
                     placed = True
             for g in range(len(requests)):
-                if requests[g][0] == 7:
+                if requests[g][0] == 8:
                     if requests[g][9] == 1 and placed == False:
                         if (i == round(requests[g][4]/scale-camy+height/2) and j == round(requests[g][5]/scale-camx+width/2)) or (i == round(requests[g][7]/scale-camy+height/2) and j == round(requests[g][8]/scale-camx+width/2)):
                             print2(requests[g][10])
@@ -232,28 +233,32 @@ while True:
             case 2: #Target 1
                 speed = (particles[k][2]**2+particles[k][3]**2)**0.5
                 print2(f"{particles[k][6]} speed:{speed:.2e}m/s \033[K\n")
-            case 3: #Target 1, Target 2
+            case 3: #Target 1
+                xspeed = particles[k][3]
+                yspeed = particles[k][2]
+                print2(f"{particles[k][6]} X,Y speeds:({xspeed:.2e},{yspeed:.2e})m/s \033[K\n")
+            case 4: #Target 1, Target 2
                 b = requests[i][2]
                 particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
                 tempgrav = (gravityconst*(particles[k][4]*particles[b][4])/(particledist**2))
                 print2(f"Shared gravitational force between {particles[k][6]} and {particles[b][6]}:{tempgrav:.2e}N \033[K\n")
-            case 4: #Target 1, Target 2
+            case 5: #Target 1, Target 2
                 b = requests[i][2]
                 particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
                 tempgrav = (gravityconst*(particles[k][4]*particles[b][4])/(particledist**2))/particles[k][4]
                 print2(f"{particles[k][6]} gravitational force with {particles[b][6]}, adjusted for {particles[k][6]}'s mass:{tempgrav:.2e}N \033[K\n")
-            case 5: #Target 1, Target 2
+            case 6: #Target 1, Target 2
                 b = requests[i][2]
                 particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
                 print2(f"Distance between {particles[k][6]} and {particles[b][6]}:{particledist:.2e}m \033[K\n")
-            case 6: #Target 1, Max Speed, Min Speed
+            case 7: #Target 1, Max Speed, Min Speed
                 speed = (particles[k][2]**2+particles[k][3]**2)**0.5
                 if speed > requests[i][2]:
                     requests[i][2] = speed
                 if speed < requests[i][3]:
                     requests[i][3] = speed
                 print2(f"{particles[k][6]} Minimum speed:{requests[i][3]:.2e}m/s Maximum speed:{requests[i][2]:.2e}m/s \033[K\n")
-            case 7: #Target 1, Target 2, Apoapsis dist, y, x, Periapsis dist, y, x, show orbit, periapsis and apoapsis color
+            case 8: #Target 1, Target 2, Apoapsis dist, y, x, Periapsis dist, y, x, show orbit, periapsis and apoapsis color
                 b = requests[i][2]
                 particledist = ((particles[k][0]-particles[b][0])**2+(particles[k][1]-particles[b][1])**2)**0.5
                 if particledist > requests[i][3]:
